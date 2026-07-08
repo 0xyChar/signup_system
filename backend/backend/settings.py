@@ -151,7 +151,7 @@ EMAIL_HOST = 'smtp.gmail.com'  # Or your email provider
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'mutuacharity62@gmail.com'  # Your email
-EMAIL_HOST_PASSWORD = 'jthn ntuv vtzi iufv'  # App password from Google
+EMAIL_HOST_PASSWORD = # App password from Google
 DEFAULT_FROM_EMAIL = 'mutuacharity62@gmail.com'
 
 # Frontend URL for verification links
