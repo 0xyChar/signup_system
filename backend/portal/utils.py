@@ -28,8 +28,8 @@ def send_verification_email(user):
     
     If you didn't sign up for this account, please ignore this email.
     
-    Thanks,
-    Your Team
+    Best,
+    Charity
     """
     
     send_mail(
