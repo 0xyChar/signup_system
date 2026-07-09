@@ -17,22 +17,32 @@
     <!-- Main Content -->
     <main class="main-content">
       <div class="content-container">
-        <!-- Welcome Section -->
-        <section class="welcome-section">
-          <div class="welcome-badge">ACCESS GRANTED</div>
-          <h1 class="welcome-title">
-            Welcome, <span class="highlight">{{ user?.username }}</span>
-          </h1>
-          <p class="welcome-message">
-            You are one of {{ stats.total_users || 0 }} registered members.
-          </p>
-          <div class="welcome-stats">
-            <span class="stat-item">New today: {{ stats.new_users_today || 0 }}</span>
-            <span class="stat-divider">|</span>
-            <span class="stat-item">Joined: {{ user?.date_joined || 'Recently' }}</span>
+        <!-- Quote of the Day -->
+        <section class="quote-section">
+          <div class="quote-content">
+            <span class="quote-mark">"</span>
+            <p class="quote-text">{{ currentQuote.text }}</p>
+            <span class="quote-author">— {{ currentQuote.author }}</span>
+          </div>
+          <div class="quote-refresh">
+            <span class="quote-day">Day {{ currentQuote.day }}</span>
+            <button @click="refreshQuote" class="quote-btn">↻</button>
           </div>
         </section>
 
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+          <div class="welcome-badge">✦ WELCOME</div>
+          <h1 class="welcome-title">
+            Hello, <span class="highlight">{{ user?.username }}</span>
+          </h1>
+          <p class="welcome-message">
+            You are one of {{ stats.total_users || 0 }} amazing people in our community.
+          </p>
+          <div class="welcome-stats">
+  <span class="stat-item">New today: {{ stats.new_users_today || 0 }}</span>
+          </div>
+        </section>
         <!-- Stats Grid -->
         <div class="stats-grid">
           <div class="stat-card stat-blue">
@@ -41,7 +51,6 @@
               <span class="stat-icon">◆</span>
             </div>
             <div class="stat-value">{{ stats.total_users || 0 }}</div>
-            <div class="stat-footer">Registered accounts</div>
           </div>
 
           <div class="stat-card stat-green">
@@ -50,7 +59,6 @@
               <span class="stat-icon">◈</span>
             </div>
             <div class="stat-value">{{ stats.new_users_today || 0 }}</div>
-            <div class="stat-footer">Joined in 24 hours</div>
           </div>
 
           <div class="stat-card stat-purple">
@@ -58,8 +66,7 @@
               <span class="stat-label">System Status</span>
               <span class="stat-icon">◉</span>
             </div>
-            <div class="stat-value">Online</div>
-            <div class="stat-footer">All systems nominal</div>
+            <div class="stat-value">Alive</div>
           </div>
         </div>
 
@@ -120,6 +127,53 @@ const logout = async () => {
   router.push('/login')
 }
 
+// ===== QUOTE OF THE DAY =====
+const quotes = [
+  { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+  { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+  { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+  { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+  { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+  { text: "The only impossible journey is the one you never begin.", author: "Tony Robbins" },
+  { text: "Great things never come from comfort zones.", author: "Unknown" },
+  { text: "The best time to start was yesterday. The next best time is now.", author: "Unknown" },
+  { text: "You are capable of amazing things.", author: "Unknown" },
+  { text: "Every day is a new beginning. Take a deep breath and start again.", author: "Unknown" },
+  { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+  { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
+  { text: "The only person you are destined to become is the person you decide to be.", author: "Ralph Waldo Emerson" },
+  { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
+  { text: "What you get by achieving your goals is not as important as what you become.", author: "Zig Ziglar" },
+  { text: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" },
+  { text: "Don't be pushed around by the problems in your life. Lead them.", author: "Unknown" }
+]
+
+const currentQuote = ref({
+  text: "The only way to do great work is to love what you do.",
+  author: "Steve Jobs",
+  day: 1
+})
+
+const getQuoteOfTheDay = () => {
+  const today = new Date()
+  const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24))
+  const index = dayOfYear % quotes.length
+  currentQuote.value = {
+    text: quotes[index].text,
+    author: quotes[index].author,
+    day: dayOfYear
+  }
+}
+
+const refreshQuote = () => {
+  const randomIndex = Math.floor(Math.random() * quotes.length)
+  currentQuote.value = {
+    text: quotes[randomIndex].text,
+    author: quotes[randomIndex].author,
+    day: currentQuote.value.day
+  }
+}
+
 onMounted(async () => {
   try {
     const response = await api.get('dashboard/stats/')
@@ -127,6 +181,8 @@ onMounted(async () => {
   } catch (error) {
     console.error('Failed to fetch stats:', error)
   }
+  
+  getQuoteOfTheDay()
 })
 </script>
 
@@ -139,16 +195,16 @@ onMounted(async () => {
 
 .dashboard-container {
   min-height: 100vh;
-  background: #f0f4ff;
+  background: linear-gradient(135deg, #f0f4ff 0%, #fae8ff 50%, #fce4ec 100%);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   color: #1a1a2e;
 }
 
 /* ===== HEADER ===== */
 .header {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(100, 100, 255, 0.08);
+  border-bottom: 1px solid rgba(108, 92, 231, 0.08);
   padding: 16px 0;
   position: sticky;
   top: 0;
@@ -217,15 +273,98 @@ onMounted(async () => {
 .main-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 40px 60px;
+  padding: 30px 40px 60px;
+}
+
+/* ===== QUOTE SECTION ===== */
+.quote-section {
+  background: linear-gradient(135deg, #6c5ce7, #4a6cf7);
+  border-radius: 16px;
+  padding: 28px 40px;
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 8px 32px rgba(108, 92, 231, 0.2);
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 8px 32px rgba(108, 92, 231, 0.2); }
+  50% { box-shadow: 0 8px 48px rgba(108, 92, 231, 0.35); }
+}
+
+.quote-content {
+  flex: 1;
+}
+
+.quote-mark {
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.3);
+  font-family: Georgia, serif;
+  display: block;
+  line-height: 1;
+  margin-bottom: -6px;
+}
+
+.quote-text {
+  font-size: 18px;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1.5;
+  font-style: italic;
+  margin-bottom: 4px;
+}
+
+.quote-author {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 300;
+}
+
+.quote-refresh {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  margin-left: 20px;
+}
+
+.quote-day {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 2px;
+  font-weight: 300;
+}
+
+.quote-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quote-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(180deg);
 }
 
 /* ===== WELCOME SECTION ===== */
 .welcome-section {
-  margin-bottom: 40px;
-  padding: 40px 48px;
-  background: linear-gradient(135deg, #ffffff, #f8f9ff);
-  border: 1px solid rgba(108, 92, 231, 0.08);
+  margin-bottom: 32px;
+  padding: 32px 40px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(108, 92, 231, 0.04);
 }
@@ -235,12 +374,12 @@ onMounted(async () => {
   color: #6c5ce7;
   letter-spacing: 3px;
   text-transform: uppercase;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   font-weight: 600;
 }
 
 .welcome-title {
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 300;
   color: #1a1a2e;
   letter-spacing: -0.5px;
@@ -256,12 +395,12 @@ onMounted(async () => {
   font-size: 14px;
   color: #6a6a8a;
   font-weight: 400;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .welcome-stats {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   font-size: 13px;
   color: #8a8aaa;
 }
@@ -279,32 +418,33 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 
 .stat-card {
-  background: #ffffff;
-  border: 1px solid rgba(100, 100, 200, 0.06);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 16px;
-  padding: 24px 28px;
-  transition: all 0.25s ease;
+  padding: 22px 26px;
+  transition: all 0.3s ease;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
 }
 
 .stat-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(108, 92, 231, 0.06);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(108, 92, 231, 0.08);
 }
 
 .stat-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .stat-label {
-  font-size: 12px;
+  font-size: 11px;
   color: #8a8aaa;
   font-weight: 500;
   letter-spacing: 1px;
@@ -318,35 +458,26 @@ onMounted(async () => {
 }
 
 .stat-value {
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 400;
   color: #1a1a2e;
   letter-spacing: -0.5px;
 }
 
-.stat-footer {
-  font-size: 11px;
-  color: #a0a0b8;
-  font-weight: 400;
-  margin-top: 4px;
-}
-
-/* Color variants */
 .stat-blue .stat-value { color: #4a6cf7; }
 .stat-blue .stat-icon { color: #4a6cf7; opacity: 0.6; }
-
 .stat-green .stat-value { color: #22c55e; }
 .stat-green .stat-icon { color: #22c55e; opacity: 0.6; }
-
 .stat-purple .stat-value { color: #6c5ce7; }
 .stat-purple .stat-icon { color: #6c5ce7; opacity: 0.6; }
 
 /* ===== ACTIVITY SECTION ===== */
 .activity-section {
-  background: #ffffff;
-  border: 1px solid rgba(100, 100, 200, 0.06);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 16px;
-  padding: 24px 28px;
+  padding: 22px 26px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
 }
 
@@ -354,7 +485,7 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .section-title {
@@ -384,7 +515,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 12px 16px;
+  padding: 10px 14px;
   background: transparent;
   border-radius: 8px;
   animation: fadeInUp 0.4s ease forwards;
@@ -401,12 +532,12 @@ onMounted(async () => {
 }
 
 .activity-item:hover {
-  background: rgba(108, 92, 231, 0.03);
+  background: rgba(108, 92, 231, 0.04);
 }
 
 .activity-avatar {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   background: rgba(108, 92, 231, 0.08);
   border-radius: 50%;
   display: flex;
@@ -416,7 +547,7 @@ onMounted(async () => {
 }
 
 .avatar-text {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: #6c5ce7;
 }
@@ -428,7 +559,7 @@ onMounted(async () => {
 }
 
 .activity-name {
-  font-size: 14px;
+  font-size: 13px;
   color: #1a1a2e;
   font-weight: 500;
 }
@@ -448,14 +579,14 @@ onMounted(async () => {
 
 .empty-state {
   text-align: center;
-  padding: 40px 0;
+  padding: 30px 0;
   color: #a0a0b8;
 }
 
 .empty-icon {
   font-size: 24px;
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   opacity: 0.3;
 }
 
@@ -472,6 +603,23 @@ onMounted(async () => {
   
   .main-content {
     padding: 20px;
+  }
+  
+  .quote-section {
+    padding: 20px 24px;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .quote-refresh {
+    margin-left: 0;
+    margin-top: 12px;
+    flex-direction: row;
+    gap: 12px;
+  }
+  
+  .quote-text {
+    font-size: 16px;
   }
   
   .welcome-section {
@@ -501,7 +649,7 @@ onMounted(async () => {
   
   .activity-time {
     width: 100%;
-    padding-left: 52px;
+    padding-left: 48px;
   }
 }
 </style>
