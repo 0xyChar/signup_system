@@ -7,6 +7,7 @@ import Dashboard from '../pages/Dashboard.vue'
 import VerifyEmail from '../pages/VerifyEmail.vue'
 
 const routes = [
+    { path: '/', redirect: '/login' }, //redirects to the login page
     { path: '/login', component: Login },
     { path: '/signup', component: Signup },
     { path: '/forgot-password', component: ForgotPassword },
