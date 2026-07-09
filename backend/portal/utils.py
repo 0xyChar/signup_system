@@ -50,18 +50,18 @@ def send_reset_password_email(user):
     
     subject = 'Reset Your Password'
     message = f"""
-    Hi {user.username},
+    Hello there {user.username},
     
-    We received a request to reset your password.
+    I have  received a request to reset your password.
     Click the link below to reset it:
     {reset_link}
     
     This link expires in 1 hour.
     
-    If you didn't request this, please ignore this email.
+    If you did not  request this, please ignore this email.
     
-    Thanks,
-    Your Team
+    Best,
+    Charity
     """
     
     send_mail(
