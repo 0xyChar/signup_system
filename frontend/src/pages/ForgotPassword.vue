@@ -13,13 +13,13 @@
         </div>
 
         <div v-if="successMessage" class="success-message">
-          ✅ {{ successMessage }}
+           {{ successMessage }}
           <br>
           <router-link to="/login" style="color: #2563eb;">Back to Login</router-link>
         </div>
 
         <div v-if="errorMessage" class="error-message form-error">
-          ❌ {{ errorMessage }}
+           {{ errorMessage }}
         </div>
 
         <button type="submit" class="btn btn-primary" :disabled="isLoading" style="width:100%;">
@@ -162,4 +162,4 @@ const handleForgotPassword = async () => {
 .auth-link a:hover {
   text-decoration: underline;
 }
-</style>
+</style>git 

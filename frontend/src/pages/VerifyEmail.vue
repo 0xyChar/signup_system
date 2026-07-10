@@ -8,7 +8,7 @@
       </div>
       
       <div v-if="verified" class="success">
-        ✅ Email verified successfully!
+         Email verified successfully!
         <br>
         <router-link to="/login" style="color: #2563eb; text-decoration: none;">
           Click here to login
@@ -16,7 +16,7 @@
       </div>
       
       <div v-if="error" class="error-message">
-        ❌ {{ error }}
+         {{ error }}
         <br>
         <router-link to="/login" style="color: #2563eb; text-decoration: none;">
           Go to login

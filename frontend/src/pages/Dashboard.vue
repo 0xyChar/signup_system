@@ -127,7 +127,7 @@ const logout = async () => {
   router.push('/login')
 }
 
-// ===== QUOTE OF THE DAY =====
+// Quote of the day
 const quotes = [
   { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
   { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
@@ -269,14 +269,14 @@ onMounted(async () => {
   color: #6c5ce7;
 }
 
-/* ===== MAIN CONTENT ===== */
+/* Main Content */
 .main-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 30px 40px 60px;
 }
 
-/* ===== QUOTE SECTION ===== */
+/*Quote Section */
 .quote-section {
   background: linear-gradient(135deg, #6c5ce7, #4a6cf7);
   border-radius: 16px;
@@ -358,7 +358,7 @@ onMounted(async () => {
   transform: rotate(180deg);
 }
 
-/* ===== WELCOME SECTION ===== */
+/*Welcome section */
 .welcome-section {
   margin-bottom: 32px;
   padding: 32px 40px;
@@ -413,7 +413,7 @@ onMounted(async () => {
   color: #d0d0e0;
 }
 
-/* ===== STATS GRID ===== */
+/*Stats grid */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -595,7 +595,7 @@ onMounted(async () => {
   font-weight: 400;
 }
 
-/* ===== RESPONSIVE ===== */
+/*Responsive */
 @media (max-width: 768px) {
   .header-content {
     padding: 0 20px;

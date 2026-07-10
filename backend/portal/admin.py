@@ -5,7 +5,7 @@ from django.urls import reverse
 from .models import User
 
 class CustomUserAdmin(UserAdmin):
-    # ========== LIST VIEW ==========
+    # List View
     list_display = (
         'email', 
         'username', 
@@ -18,7 +18,7 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('email', 'username')
     ordering = ('-date_joined',)
     
-    # ========== EDIT VIEW ==========
+    #Edit view
     fieldsets = (
         ('Login Credentials', {
             'fields': ('email', 'username', 'password')
@@ -44,7 +44,7 @@ class CustomUserAdmin(UserAdmin):
     
     readonly_fields = ('date_joined', 'last_login')
     
-    # ========== CUSTOM DISPLAY METHODS ==========
+    # Custom display methods
     
     def get_verification_status(self, obj):
         """Display colored verification status"""
@@ -54,7 +54,7 @@ class CustomUserAdmin(UserAdmin):
     get_verification_status.short_description = 'Status'
     get_verification_status.admin_order_field = 'is_email_verified'
     
-    # ========== BULK ACTIONS ==========
+    # Bulk actions
     
     actions = ['make_verified', 'make_unverified', 'activate_users', 'deactivate_users']
     
@@ -78,5 +78,5 @@ class CustomUserAdmin(UserAdmin):
         self.message_user(request, f"⚠️ {count} users deactivated.")
     deactivate_users.short_description = "Deactivate selected users"
 
-# ========== REGISTER THE MODEL ==========
+# REGISTER THE MODEL
 admin.site.register(User, CustomUserAdmin)
