@@ -7,7 +7,7 @@
     <div class="auth-box-wrapper">
       <div class="auth-box">
         <div class="brand-section">
-          <h1 class="brand-name">Articles</h1>
+          <h1 class="brand-name">Login</h1>
         </div>
 
         <h2 class="auth-title">Welcome</h2>
