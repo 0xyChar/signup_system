@@ -49,8 +49,8 @@ class CustomUserAdmin(UserAdmin):
     def get_verification_status(self, obj):
         """Display colored verification status"""
         if obj.is_email_verified:
-            return "✅ Verified"
-        return "❌ Unverified"
+            return " Verified"
+        return " Unverified"
     get_verification_status.short_description = 'Status'
     get_verification_status.admin_order_field = 'is_email_verified'
     

@@ -2,7 +2,7 @@
   <router-view />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted } from 'vue'
 import { useAuthStore } from './stores/auth'
 
@@ -12,7 +12,7 @@ onMounted(() => {
   // Check if user is already authenticated
   const token = localStorage.getItem('access_token')
   if (token) {
-    // You could fetch user profile here
+    // Fetching user profile can be done here
   }
 })
 </script>
